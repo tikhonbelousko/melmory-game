@@ -9,37 +9,60 @@ main =
 
 -- MODEL
 
-type alias Model = Int
+type alias Card =
+  { value: String
+  , flipped: Bool
+  }
+
+type alias Model =
+  { cards: List Card
+  , firstPick: Maybe Card
+  , secondPick: Maybe Card
+  }
 
 model : Model
 model =
-  0
+  { firstPick = Nothing
+  , secondPick = Nothing
+  , cards =
+    [{ value = "👾", flipped = False }
+    ,{ value = "😎", flipped = False }
+    ,{ value = "🙏", flipped = False }
+    ,{ value = "🤠", flipped = False }
+    ,{ value = "😎", flipped = False }
+    ,{ value = "👾", flipped = False }
+    ,{ value = "🙏", flipped = False }
+    ,{ value = "🤡", flipped = False }
+    ,{ value = "👻", flipped = False }
+    ,{ value = "👻", flipped = False }
+    ,{ value = "🤡", flipped = False }
+    ,{ value = "🤠", flipped = False }
+    ]
+
+  }
+
 
 
 -- UPDATE
 
-type Msg = Increment | Decrement
+type Msg = SelectCard
 
 update : Msg -> Model -> Model
-update msg model =
-  case msg of
-    Increment ->
-      model + 1
-
-    Decrement ->
-      model - 1
+update msg model = model
+  --case msg of
+  --  FlipCard ->
 
 -- VIEW
 
 view : Model -> Html Msg
 view model =  div [ class "container" ]
-  (map (\i -> card) (range 1 15))
+  (map card model.cards)
 
-card : Html Msg
-card = div [ class "card" ]
+card : Card -> Html Msg
+card c = div [ class "card" ]
   [ div [ class "card__content"]
-    [ div [ class "card__front"] [ text "🤣" ]
-    , div [ class "card__back"] [ text "⭕"]
+    [ div [ class "card__front"] [ text c.value ]
+    , div [ class "card__back"] [ text "⭕" ]
     ]
   ]
 
