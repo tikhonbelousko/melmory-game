@@ -30,7 +30,9 @@ h1 {
   margin: 10px;
   perspective: 1000px;
 
-  &:hover {
+  &--flipped {
+    @extend .card;
+
     .card__content {
       transform: rotateY(180deg);
     }
@@ -60,12 +62,12 @@ h1 {
   }
 
   .card__front {
-    z-index: 2;
-    transform: rotateY(0deg);
+    transform: rotateY(180deg);
 
   }
 
   .card__back {
-    transform: rotateY(180deg);
+    z-index: 2;
+    transform: rotateY(0deg);
   }
 }
