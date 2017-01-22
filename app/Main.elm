@@ -32,11 +32,16 @@ update msg model =
 -- VIEW
 
 view : Model -> Html Msg
-view model =  div []
-  (map (\i -> card) (range 1 16))
+view model =  div [ class "container" ]
+  (map (\i -> card) (range 1 15))
 
 card : Html Msg
-card = div [ class "card" ] [ text "🤣" ]
+card = div [ class "card" ]
+  [ div [ class "card__content"]
+    [ div [ class "card__front"] [ text "🤣" ]
+    , div [ class "card__back"] [ text "⭕"]
+    ]
+  ]
 
 
   --div []
