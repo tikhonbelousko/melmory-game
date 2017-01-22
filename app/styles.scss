@@ -2,3 +2,14 @@ body {
   margin: 0;
   padding: 0;
 }
+
+.card {
+  width: 60px;
+  height: 100px;
+  background: #fafafa;
+  margin: 10px;
+  border-radius: 8px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
