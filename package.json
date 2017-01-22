@@ -1,0 +1,14 @@
+{
+  "name": "melmory-game",
+  "version": "1.0.0",
+  "main": "index.js",
+  "license": "MIT",
+  "scripts": {
+    "start": "webpack-dev-server --hot"
+  },
+  "dependencies": {
+    "elm-webpack-loader": "^4.2.0",
+    "webpack": "2.2",
+    "webpack-dev-server": "2.2"
+  }
+}
