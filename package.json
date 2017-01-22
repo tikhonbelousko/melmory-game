@@ -6,8 +6,12 @@
   "scripts": {
     "start": "webpack-dev-server --hot"
   },
-  "dependencies": {
+  "devDependencies": {
+    "css-loader": "^0.26.1",
     "elm-webpack-loader": "^4.2.0",
+    "extract-text-webpack-plugin": "beta",
+    "node-sass": "^4.3.0",
+    "sass-loader": "^4.1.1",
     "webpack": "2.2",
     "webpack-dev-server": "2.2"
   }

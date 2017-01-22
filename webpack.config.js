@@ -1,4 +1,5 @@
 const path = require('path')
+const ExtractTextPlugin = require('extract-text-webpack-plugin')
 
 module.exports = function (env) {
   return {
@@ -17,15 +18,21 @@ module.exports = function (env) {
           test: /\.elm/,
           exclude: [/elm-stuff/, /node_modules/],
           use: [ 'elm-webpack-loader' ]
+        },
+        {
+          test: /\.scss/,
+          loader: ExtractTextPlugin.extract('css-loader!sass-loader')
         }
       ]
     },
     devServer: {
       contentBase: path.join(__dirname, "build"),
-      // hot: true,
       inline: true,
       compress: true,
       port: 8080
-    }
+    },
+    plugins: [
+      new ExtractTextPlugin({ filename: 'bundle.css', disable: false, allChunks: true })
+    ]
   }
 }
