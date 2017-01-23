@@ -46,7 +46,6 @@ model =
 
 
 -- UPDATE
-
 type Msg = FlipCard Card
 
 update : Msg -> Model -> Model
@@ -54,27 +53,37 @@ update msg model =
   case msg of
     FlipCard c ->
       { model |
-        firstPick = if (model.firstPick == Just c) then Nothing else Just c
+        firstPick = getFirstPick model c,
+        secondPick = getSecondPick model c
       }
+
+getFirstPick : Model -> Card -> Maybe Card
+getFirstPick { firstPick, secondPick } card =
+  if (firstPick == Nothing) || (firstPick /= Nothing) && (secondPick /= Nothing) && (secondPick /= Just card) then
+    Just card
+  else if (firstPick /= Nothing && secondPick == Nothing) then
+    firstPick
+  else
+    Nothing
+
+getSecondPick : Model -> Card -> Maybe Card
+getSecondPick { firstPick, secondPick } card =
+  if (secondPick == Nothing && firstPick /= Nothing) then
+    Just card
+  else
+    Nothing
 
 -- VIEW
 
 view : Model -> Html Msg
 view model =  div [ class "container" ]
-  (map (\c -> card (model.firstPick == Just c) c) model.cards)
+  (map (\c -> card (model.firstPick == Just c || model.secondPick == Just c) c) model.cards)
 
 card : Bool -> Card -> Html Msg
-card flipped c = div [ class (if (log "" flipped) then "card--flipped" else "card"), onClick (FlipCard c) ]
+card flipped c = div [ class (if flipped then "card--flipped" else "card"), onClick (FlipCard c) ]
   [ div [ class "card__content" ]
     [ div [ class "card__front"] [ text c.value ]
-    , div [ class "card__back"] [ text "⭕" ]
+    , div [ class "card__back"] [ text "X" ]
     ]
   ]
 
-
-  --div []
-  --  [ button [ onClick Decrement ] [ text "-" ]
-  --  , div [] [ text (toString model) ]
-  --  , button [ onClick Increment ] [ text "+" ]
-  --  , text "💪"
-  --  ]
