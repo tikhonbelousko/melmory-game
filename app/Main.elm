@@ -83,7 +83,7 @@ card : Bool -> Card -> Html Msg
 card flipped c = div [ class (if flipped then "card--flipped" else "card"), onClick (FlipCard c) ]
   [ div [ class "card__content" ]
     [ div [ class "card__front"] [ text c.value ]
-    , div [ class "card__back"] [ text "X" ]
+    , div [ class "card__back"] [ text "⭕️" ]
     ]
   ]
 
