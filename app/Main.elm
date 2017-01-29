@@ -49,10 +49,17 @@ update : Msg -> Model -> ( Model, Cmd Msg )
 update msg model =
   case msg of
     FlipCard c ->
-      ({ model |
-        firstPick = getFirstPick model c,
+      let
+        firstPick = getFirstPick model c
         secondPick = getSecondPick model c
-      }, Cmd.none)
+        isMatch = (Maybe.map (\pick -> pick.value) firstPick) == (Maybe.map (\pick -> pick.value) secondPick)
+        cards = if isMatch then flipCards firstPick secondPick model.cards else model.cards
+      in
+        ({ model |
+          cards = cards,
+          firstPick = if isMatch then Nothing else firstPick,
+          secondPick = if isMatch then Nothing else secondPick
+        }, Cmd.none)
     CloseCards t ->
       ({ model |
         firstPick = Nothing,
@@ -73,6 +80,21 @@ getSecondPick { firstPick, secondPick } card =
   else
     secondPick
 
+flipCards : Maybe Card -> Maybe Card -> List Card -> List Card
+flipCards firstPick secondPick cards =
+  let
+    getId card = card.id
+    matchCard card =
+      if Just card.id == (Maybe.map getId firstPick) || Just card.id == (Maybe.map getId secondPick) then
+        { card | matched = True }
+      else
+        card
+  in
+    map matchCard cards
+
+
+
+
 -- SUBSCRIPTIONS
 
 subscriptions : Model -> Sub Msg
@@ -86,14 +108,18 @@ subscriptions model =
 -- VIEW
 
 view : Model -> Html Msg
-view model =  div [ class "container" ]
-  (map (\c -> card (model.firstPick == Just c || model.secondPick == Just c) c) model.cards)
+view model =
+  let
+    isFlipped card = model.firstPick  == (Just card) || model.secondPick == (Just card) || card.matched
+  in
+    div [ class "container" ]
+      (map (\c -> card (isFlipped c) c) model.cards)
 
 card : Bool -> Card -> Html Msg
 card flipped c = div [ class (if flipped then "card--flipped" else "card"), onClick (FlipCard c) ]
   [ div [ class "card__content" ]
     [ div [ class "card__front"] [ text c.value ]
-    , div [ class "card__back"] [ text "⭕️" ]
+    , div [ class "card__back"] [ text "⭕" ]
     ]
   ]
 
@@ -108,9 +134,3 @@ main =
     , update = update
     , subscriptions = subscriptions
     }
-
-    --{ model = model
-    --, view = view
-    --, update = update
-    --, subscriptions = (always Sub.none)
-    --}
