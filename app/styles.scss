@@ -4,12 +4,34 @@ body {
   background: #fafafa;
   cursor: default;
   user-select: none;
+  font-family: sans-serif;
 }
 
 h1 {
   text-align: center;
   margin: 20px;
   font-family: sans-serif;
+}
+
+// ---
+// Title
+// ---
+.title {
+  font-size: 48px;
+  font-weight: 900;
+  font-style: italic;
+  color: #ff2d98;
+  text-align: center;
+  margin-bottom: 12px;
+  margin-top: 24px;
+}
+
+.caption {
+  font-size: 20px;
+  font-weight: 500;
+  color: #222;
+  text-align: center;
+  margin-bottom: 32px;
 }
 
 // ---
@@ -30,14 +52,6 @@ h1 {
   height: 160px;
   margin: 10px;
   perspective: 1000px;
-
-  &--flipped {
-    @extend .card;
-
-    .card__content {
-      transform: rotateY(180deg);
-    }
-  }
 
   .card__content {
     transition: 0.3s;
@@ -69,5 +83,82 @@ h1 {
   .card__back {
     z-index: 2;
     transform: rotateY(0deg);
+  }
+}
+
+.card--flipped {
+  @extend .card;
+
+  .card__content {
+    transform: rotateY(180deg);
+  }
+}
+
+// ---
+// Modal
+// ---
+.modal {
+  position: fixed;
+  top: 0;
+  bottom: 0;
+  left: 0;
+  right: 0;
+  background: rgba(#000, 0.75);
+  z-index: 10;
+  display: flex;
+  align-items: flex-start;
+  justify-content: center;
+  padding-top: 100px;
+  pointer-events: none;
+  opacity: 0;
+  transition: all 0.4s ease;
+
+  .modal__content {
+    width: 400px;
+    border-radius: 8px;
+    box-shadow: 0 3px 5px rgba(#000, 0.5);
+    background: #fff;
+    padding: 24px;
+    text-align: center;
+    transform: translateY(100px) scale(0.8);
+    transition: all 0.4s ease;
+  }
+
+  .modal__title {
+    text-align: center;
+    font-size: 32px;
+    font-weight: 900;
+    margin-bottom: 32px;
+  }
+
+  .modal__text {
+    text-align: center;
+    font-size: 20px;
+    margin-bottom: 32px;
+    font-weight: 700;
+  }
+
+  .modal__button {
+    padding: 16px 24px;
+    background: #ff2d98;
+    border-radius: 4px;
+    color: #fff;
+    border: none;
+    font-size: 18px;
+    font-weight: 700;
+
+    &:hover {
+      opacity: 0.8;
+    }
+  }
+}
+
+.modal--open {
+  @extend .modal;
+  pointer-events: auto;
+  opacity: 1;
+
+  .modal__content {
+    transform: translateY(0) scale(0.8);;
   }
 }
